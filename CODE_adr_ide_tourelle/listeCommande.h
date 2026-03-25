@@ -25,5 +25,7 @@ move auto X... Y... (... = en auto la valeur est une position attendue, ex X2000
 
 enabel moteur on (pas de puissance moteur)
 --> s
+FAN.................................................................
 
+FAN... Puissance... (Puissance max 1024 FAN 1 2 ou 3)
 */

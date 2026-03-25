@@ -9,7 +9,7 @@
 #include "commandeFAN.h"
 //...........................................................................
 void commandeFan(int fan, int puissance) {
-  if (fan <= 3 && puissance >= 0 || puissance <= 1024) {
+  if (fan <= 3 && puissance >= 0 && puissance <= 1024) {
     if (fan == 1) {
       analogWriteFreq(1000);   // fréquence PWM = 1 kHz
       analogWriteRange(1024);  // résolution 10 bits → 0 à 1023

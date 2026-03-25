@@ -171,7 +171,7 @@ void moveManu(float speedX, float speedY) {
 
   // delay : vMax (lent) → vMin (rapide)
   // speed=1.0 → delayMin, speed=0.1 → proche de delayMax
-  long delayX = (long)map(absX * 1000, 0, 1000, vMax, vMin);
+  long delayX = (long)map(absX * 2000, 0, 2000, vMax, vMin);
   long delayY = (long)map(absY * 1000, 0, 1000, vMax, vMin);
 
   int compteur = 0;

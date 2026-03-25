@@ -99,7 +99,7 @@ void creationDordreResetTMC(String line) {
 
 
   int SVX = 37;
-  int SVY = 35;
+  int SVY = 30;
 
   int CX = 1000;
   int CY = 1000;
