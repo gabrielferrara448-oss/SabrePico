@@ -144,10 +144,7 @@ void setup() {
 
   //---------------------------------------------------------------
   // Initialiser chaque TMC
-  initDriver(driverX, "Driver X");
-  initDriver(driverY, "Driver Y");
-  initDriver(driverZ, "Driver Z");
-  initDriver(driverE, "Driver E");
+  resetTMC();
 
   //----------------------------------------------------------------
   //led vert fin setup

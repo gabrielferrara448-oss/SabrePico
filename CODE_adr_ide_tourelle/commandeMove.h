@@ -6,7 +6,7 @@
 
 
 void handleMoveCommand(String line);
-void moveAuto(long targetX, long targetYint , int delayMin, int delayMax);
+void moveAuto(long targetX, long targetY, int delayMin, int delayMax);
 void moveManu(float speedX, float speedY);
 
 #endif

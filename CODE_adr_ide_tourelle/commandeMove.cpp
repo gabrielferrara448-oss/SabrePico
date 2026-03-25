@@ -173,30 +173,55 @@ void moveManu(float speedX, float speedY) {
   // speed=1.0 → delayMin, speed=0.1 → proche de delayMax
   long delayX = (long)map(absX * 1000, 0, 1000, vMax, vMin);
   long delayY = (long)map(absY * 1000, 0, 1000, vMax, vMin);
-  
+
   int compteur = 0;
   bool infocom = false;
-  
-  while (infocom == false || compteur <= 10000) {
+
+  while (infocom == false && compteur <= 10000) {
 
     // Step X
-    if (absX > 0.01 && (posX >= 0 || PosX <= 5000)) {
-      digitalWrite(STEP_X, HIGH);
-      delayMicroseconds(5);
-      digitalWrite(STEP_X, LOW);
-      delayMicroseconds(delayX);
-      if (DIR_X) posX++;
-      else posX--;
+    if (absX > 0.01) {
+      bool dirX = speedX >= 0;  // true = positif
+
+      // Bloque si on est à la limite ET qu'on veut continuer dans ce sens
+      if (dirX && posX >= 5000) {
+        // limite max atteinte, on ne bouge pas
+      } else if (!dirX && posX <= 0) {
+        // limite min atteinte, on ne bouge pas
+      } else {
+        digitalWrite(STEP_X, HIGH);
+        delayMicroseconds(5);
+        digitalWrite(STEP_X, LOW);
+        delayMicroseconds(delayX);
+        if (dirX) posX++;
+        else posX--;
+      }
     }
 
     // Step Y
     if (absY > 0.01) {
-      digitalWrite(STEP_Y, HIGH);
-      delayMicroseconds(5);
-      digitalWrite(STEP_Y, LOW);
-      delayMicroseconds(delayY);
+      bool dirY = speedY >= 0;
+
+      if (dirY && posY >= 40000) {
+        // limite max atteinte
+      } else if (!dirY && posY <= 0) {
+        // limite min atteinte
+      } else {
+        digitalWrite(STEP_Y, HIGH);
+        delayMicroseconds(5);
+        digitalWrite(STEP_Y, LOW);
+        delayMicroseconds(delayY);
+        if (dirY) posY++;
+        else posY--;
+      }
     }
     infocom = communication();
+    if (infocom){
+      message("position X : ");
+      messageln(String(posX));
+      message("position Y : ");
+      messageln(String(posY));
+    }
 
     compteur++;
   }

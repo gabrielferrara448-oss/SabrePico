@@ -77,15 +77,15 @@ void ordreResetRP2040() {
   }
 }
 //...........................................................................
-void resetTMC(int stall_valueX = 20, int courantX = 1000, int stall_valueY = 20, int courantY = 1000) {
+void resetTMC(int stall_valueX, int courantX, int stall_valueY, int courantY) {
 
   messageln("=== Initialisation drivers ===");
 
   // Initialiser chaque TMC
   initDriver(driverX, "Driver X", stall_valueX, courantX);
   initDriver(driverY, "Driver Y", stall_valueY, courantY);
-  initDriver(driverZ, "Driver Z");
-  initDriver(driverE, "Driver E");
+  initDriver(driverZ, "Driver Z",0,0);
+  initDriver(driverE, "Driver E",0,0);
 
   messageln("=== Initialisation terminée ===");
 
@@ -98,7 +98,7 @@ void resetTMC(int stall_valueX = 20, int courantX = 1000, int stall_valueY = 20,
 void creationDordreResetTMC(String line) {
 
 
-  int SVX = 35;
+  int SVX = 37;
   int SVY = 35;
 
   int CX = 1000;
