@@ -7,6 +7,9 @@
 #include "gestionLedRGBAdressable.h"
 #include "commandeFAN.h"
 
+long lastDelayX = 0;
+long lastDelayY = 0;
+
 //...........................................................................
 void handleMoveCommand(String line) {
 
@@ -87,6 +90,17 @@ void handleMoveCommand(String line) {
 
 void moveAuto(long targetX, long targetY, int delayMin, int delayMax) {
 
+  if (targetX > POSMAX_X || targetX < 0) {
+    messageln("ERR 1");
+    messageln("erreur 1 axe X depace pose max ou min");
+    return;
+  }
+  if (targetX > POSMAX_X || targetX < 0) {
+    messageln("ERR 2");
+    messageln("erreur 2 axe Y depace pose max ou min");
+    return;
+  }
+
   messageln("=== MOVE AUTO ===");
 
   long dx = abs(targetX - posX);
@@ -151,6 +165,11 @@ void moveAuto(long targetX, long targetY, int delayMin, int delayMax) {
 
     i++;
   }
+  posX = targetX;
+  posY = targetY;
+
+  messageln("POSITION_X " + String(posX));
+  messageln("POSITION_Y " + String(posY));
 
   messageln("Move Auto terminé");
 }
@@ -169,61 +188,109 @@ void moveManu(float speedX, float speedY) {
   float absX = speedX < 0 ? -speedX : speedX;
   float absY = speedY < 0 ? -speedY : speedY;
 
-  // delay : vMax (lent) → vMin (rapide)
-  // speed=1.0 → delayMin, speed=0.1 → proche de delayMax
+  // --- RAMPE D'ACCÉLÉRATION ---
+  // Seuil de différence de vitesse pour déclencher la rampe
+  const float RAMP_THRESHOLD = 0.2f;
+  const int   RAMP_STEPS     = 30;    // Nombre de paliers
+  const int   RAMP_STEP_MS   = 15;    // Durée de chaque palier (ms)
+
+  float deltaX = absX - (lastDelayX > 0 ? (float)(vMax - lastDelayX) / (vMax - vMin) : 0.0f);
+  float deltaY = absY - (lastDelayY > 0 ? (float)(vMax - lastDelayY) / (vMax - vMin) : 0.0f);
+
+  // Vitesse de départ de la rampe = vitesse actuelle ou une valeur mini
+  float startX = absX - deltaX;
+  float startY = absY - deltaY;
+
+  bool needRampX = (deltaX > RAMP_THRESHOLD);
+  bool needRampY = (deltaY > RAMP_THRESHOLD);
+
+  if (needRampX || needRampY) {
+    for (int i = 1; i <= RAMP_STEPS; i++) {
+      float t = (float)i / RAMP_STEPS;  // 0.0 → 1.0
+
+      // Interpolation linéaire vers la vitesse cible
+      float rampAbsX = needRampX ? (startX + t * (absX - startX)) : absX;
+      float rampAbsY = needRampY ? (startY + t * (absY - startY)) : absY;
+
+      long rampDelayX = (long)map(rampAbsX * 2000, 0, 2000, vMax, vMin);
+      long rampDelayY = (long)map(rampAbsY * 1000, 0, 1000, vMax, vMin);
+
+      unsigned long palierStart = millis();
+      while (millis() - palierStart < RAMP_STEP_MS) {
+
+        if (needRampX && rampAbsX > 0.01) {
+          bool dirX = speedX >= 0;
+          if      ( dirX && posX >= POSMAX_X) {}
+          else if (!dirX && posX <= 0)        {}
+          else {
+            digitalWrite(STEP_X, HIGH);
+            delayMicroseconds(5);
+            digitalWrite(STEP_X, LOW);
+            delayMicroseconds(rampDelayX);
+            if (dirX) posX++; else posX--;
+          }
+        }
+
+        if (needRampY && rampAbsY > 0.01) {
+          bool dirY = speedY >= 0;
+          if      ( dirY && posY >= POSMAX_Y) {}
+          else if (!dirY && posY <= 0)        {}
+          else {
+            digitalWrite(STEP_Y, HIGH);
+            delayMicroseconds(5);
+            digitalWrite(STEP_Y, LOW);
+            delayMicroseconds(rampDelayY);
+            if (dirY) posY++; else posY--;
+          }
+        }
+      }
+    }
+  }
+  // --- FIN RAMPE ---
+
+  // Calcul du delay final (vitesse cible)
   long delayX = (long)map(absX * 2000, 0, 2000, vMax, vMin);
   long delayY = (long)map(absY * 1000, 0, 1000, vMax, vMin);
+
+  // Sauvegarde pour le prochain appel
+  lastDelayX = delayX;
+  lastDelayY = delayY;
 
   int compteur = 0;
   bool infocom = false;
 
-  while (infocom == false && compteur <= 10000) {
+  while (infocom == false) {
 
-    // Step X
     if (absX > 0.01) {
-      bool dirX = speedX >= 0;  // true = positif
-
-      // Bloque si on est à la limite ET qu'on veut continuer dans ce sens
-      if (dirX && posX >= 5000) {
-        // limite max atteinte, on ne bouge pas
-      } else if (!dirX && posX <= 0) {
-        // limite min atteinte, on ne bouge pas
-      } else {
+      bool dirX = speedX >= 0;
+      if      ( dirX && posX >= POSMAX_X) {}
+      else if (!dirX && posX <= 0)        {}
+      else {
         digitalWrite(STEP_X, HIGH);
         delayMicroseconds(5);
         digitalWrite(STEP_X, LOW);
         delayMicroseconds(delayX);
-        if (dirX) posX++;
-        else posX--;
+        if (dirX) posX++; else posX--;
       }
     }
 
-    // Step Y
     if (absY > 0.01) {
       bool dirY = speedY >= 0;
-
-      if (dirY && posY >= 40000) {
-        // limite max atteinte
-      } else if (!dirY && posY <= 0) {
-        // limite min atteinte
-      } else {
+      if      ( dirY && posY >= POSMAX_Y) {}
+      else if (!dirY && posY <= 0)        {}
+      else {
         digitalWrite(STEP_Y, HIGH);
         delayMicroseconds(5);
         digitalWrite(STEP_Y, LOW);
         delayMicroseconds(delayY);
-        if (dirY) posY++;
-        else posY--;
+        if (dirY) posY++; else posY--;
       }
     }
-    infocom = communication();
-    if (infocom){
-      message("position X : ");
-      messageln(String(posX));
-      message("position Y : ");
-      messageln(String(posY));
-    }
 
-    compteur++;
+    infocom = communication();
   }
+
+  messageln("POSITION_X " + String(posX));
+  messageln("POSITION_Y " + String(posY));
   messageln("Move Manu terminé");
 }

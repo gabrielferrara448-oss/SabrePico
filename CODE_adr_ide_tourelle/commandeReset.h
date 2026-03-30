@@ -10,7 +10,7 @@ void ordreResetRP2040();
 //...............................................................................................
 void creationDordreResetTMC(String line);
 //............................................................................................
-void resetTMC(int stall_valueX = 37, int courantX = 1000, int stall_valueY = 30, int courantY = 1000);
+void resetTMC(int stall_valueX = STALLX, int courantX = COURANTX, int stall_valueY = STALLY, int courantY = COURANTY);
 //-----------------------------------------------------------------
 // Initialisation TMC2209
 void initDriver(TMC2209Stepper &drv, const char *name, int stall_value, int courant);

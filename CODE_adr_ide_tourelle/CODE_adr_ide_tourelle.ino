@@ -8,13 +8,6 @@
 #include "commandeFAN.h"
 #include "enabelMoteur.h"
 
-// UART0 : X et Y (GPIO0 = TX, GPIO1 = RX)
-#define UART_TX 8
-#define UART_RX 9
-
-#define UART2_TX 0
-#define UART2_RX 1
-
 //--------------------------------------------------------------
 // SET LED RGB
 const int ledCount = 160;  //nombre de leds
@@ -28,9 +21,9 @@ long posY = 0;
 int vMax = 3000;
 int vMin = 100;
 
+
 bool stalled_X = false;
 bool stalled_Y = false;
-
 bool shaftVal = false;
 
 int conteur_de_ping = 0;
@@ -44,8 +37,6 @@ TMC2209Stepper driverZ(&Serial2, R_SENSE, 0b01);
 TMC2209Stepper driverE(&Serial2, R_SENSE, 0b11);
 
 //-------------------------------------------------------------------
-int index_led = 0;  // pour animation leds
-int i = 0;          // pour animation leds
 
 void setup() {
 

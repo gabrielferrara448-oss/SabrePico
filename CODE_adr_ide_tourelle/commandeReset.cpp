@@ -98,11 +98,11 @@ void resetTMC(int stall_valueX, int courantX, int stall_valueY, int courantY) {
 void creationDordreResetTMC(String line) {
 
 
-  int SVX = 37;
-  int SVY = 30;
+  int SVX = STALLX;
+  int SVY = STALLY;
 
-  int CX = 1000;
-  int CY = 1000;
+  int CX = COURANTX;
+  int CY = COURANTY;
 
   int indexSX = line.indexOf("stall_valueX");
   int indexCX = line.indexOf("courantX");

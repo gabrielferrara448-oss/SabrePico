@@ -28,6 +28,22 @@
 #define FAN2 18
 #define FAN3 20
 
+#define STALLX 37
+#define STALLY 30
+
+#define COURANTX 1000
+#define COURANTY 1000
+
+#define POSMAX_X 5000
+#define POSMAX_Y 35000
+
+// UART0 : X et Y (GPIO0 = TX, GPIO1 = RX)
+#define UART_TX 8
+#define UART_RX 9
+
+#define UART2_TX 0
+#define UART2_RX 1
+
 // --- Variables globales (extern = déclaration sans création) ---
 extern long posX;
 extern long posY;
