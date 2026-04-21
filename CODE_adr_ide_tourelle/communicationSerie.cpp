@@ -26,6 +26,21 @@ bool communication() {
     return false;
   }
 }
+bool comstop() {
+  String s0 = "", s1 = "";
+
+  if (Serial.available())  s0 = Serial.readStringUntil('\n');
+  if (Serial1.available()) s1 = Serial1.readStringUntil('\n');
+
+  s0.trim(); // enlève \r résiduel
+  s1.trim();
+
+  if (s0 == "stop" || s1 == "stop") {
+    enabelMoteur("enabel moteur");
+    return true;
+  }
+  return false;
+}
 //.........................................................................
 String reponsecom() {
 
@@ -88,8 +103,8 @@ void treteMessageRecu(String line) {
     handleMoveCommand(line);
   } else if (line.startsWith("reset")) {
     handleReset(line);
-  } else if (line.startsWith("enabel moteur")) {
-    enabelMoteur(line);
+  } else if (line.startsWith("stop")) {
+    enabelMoteur("enabel moteur");
   } else if (line.startsWith("FAN")) {
     creationCommandeFan(line);
   }

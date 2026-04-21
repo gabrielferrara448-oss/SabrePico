@@ -97,7 +97,6 @@ void resetTMC(int stall_valueX, int courantX, int stall_valueY, int courantY) {
 //...............................................................................................
 void creationDordreResetTMC(String line) {
 
-
   int SVX = STALLX;
   int SVY = STALLY;
 

@@ -124,7 +124,8 @@ void moveAuto(long targetX, long targetY, int delayMin, int delayMax) {
   long i = 0;
 
   while (posX != targetX || posY != targetY) {
-
+    
+    if(comstop())return; // commande d'arret "d'urgence"
     // RAMPE
     int stepDelay;
 
@@ -218,6 +219,8 @@ void moveManu(float speedX, float speedY) {
       unsigned long palierStart = millis();
       while (millis() - palierStart < RAMP_STEP_MS) {
 
+      if(comstop())return; // commande d'arret "d'urgence"
+      
         if (needRampX && rampAbsX > 0.01) {
           bool dirX = speedX >= 0;
           if      ( dirX && posX >= POSMAX_X) {}

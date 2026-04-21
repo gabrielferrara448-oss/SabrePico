@@ -17,13 +17,13 @@ void enabelMoteur(String line, int i, bool j) {
     digitalWrite(EN_Z, HIGH);
     digitalWrite(EN_E, HIGH);
     messageln("puissance moteur couper");
-    messageln("pour reactiver la puissance moteur --> stop");
+    messageln("pour reactiver la puissance moteur --> quittance");
 
     while (true) {
 
       String reponse = reponsecom();
 
-      if (reponse == "s" || reponse == "S" || reponse == "stop" || reponse == "STOP") {
+      if (reponse == "quittance" || reponse == "QUITTANCE") {
         // Activer les drivers
         digitalWrite(EN_X, LOW);
         digitalWrite(EN_Y, LOW);
@@ -33,7 +33,7 @@ void enabelMoteur(String line, int i, bool j) {
         strip.show();
         break;
       }
-      strip.fill(strip.Color(0, 0, i));  // toutes les LEDs en bleu
+      strip.fill(strip.Color(i, 0, 0));  // toutes les LEDs en bleu
       strip.show();
 
       if (i == 255) j = false;
