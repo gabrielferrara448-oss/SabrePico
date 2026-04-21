@@ -6,4 +6,5 @@
 
 //............................................................................
 void allumerZone(int debut, int fin, uint32_t couleur, int debut1, int fin1, uint32_t couleur1);
+void gestionAllumerZone(String line);
 #endif

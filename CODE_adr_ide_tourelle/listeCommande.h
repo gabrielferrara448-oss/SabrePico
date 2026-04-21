@@ -28,4 +28,10 @@ enabel moteur on (pas de puissance moteur)
 FAN.................................................................
 
 FAN... Puissance... (Puissance max 1024 FAN 1 2 ou 3)
+
+commande leds..........................................................................
+
+allumer zone1 ... a ... couleur ...,...,... zone2 ... a ... couleur ...,...,... (ex: allumer zone1 35 a 50 couleur 250,250,250 zone2 115 a 130 couleur 250,250,250)
+
+phare
 */
