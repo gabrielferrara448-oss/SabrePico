@@ -28,11 +28,11 @@
 #define FAN2 18
 #define FAN3 20
 
-#define STALLX 37
-#define STALLY 30
+#define STALLX 20
+#define STALLY 3
 
-#define COURANTX 1000
-#define COURANTY 1000
+#define COURANTX 1500
+#define COURANTY 1500
 
 #define POSMAX_X 5000
 #define POSMAX_Y 35000
@@ -58,5 +58,4 @@ extern TMC2209Stepper driverX;
 extern TMC2209Stepper driverY;
 extern TMC2209Stepper driverZ;
 extern TMC2209Stepper driverE;
-
 #endif

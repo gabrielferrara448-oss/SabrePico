@@ -110,8 +110,8 @@ void homingMoteur(int vitesseHoming_X, int vitesseHoming_Y) {
 //.......................................................................
 void handleHomingCommand(String line) {
 
-  int vitesseX = 1000;  // valeur par défaut
-  int vitesseY = 1000;
+  int vitesseX = 600;  // valeur par défaut
+  int vitesseY = 600;
 
   int indexX = line.indexOf('X');
   int indexY = line.indexOf('Y');

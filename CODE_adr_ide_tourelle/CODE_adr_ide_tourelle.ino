@@ -27,7 +27,7 @@ bool stalled_Y = false;
 bool shaftVal = false;
 
 int conteur_de_ping = 0;
-//--------------------------------------------------------------
+//-------------------------------------------------------nnnn-------
 // Drivers TMC
 
 // UART addresses (déjà câblé sur SKR Pico)
@@ -148,12 +148,10 @@ void setup() {
 ///pour gere les pin diag des tmc avec le rp 2040
 void stallInterruptX() {
   stalled_X = true;
-  messageln("stalled X");
 }
 //..................................................................
 void stallInterruptY() {
   stalled_Y = true;
-  messageln("stalled Y");
 }
 //.........................................................................
 void loop() {
